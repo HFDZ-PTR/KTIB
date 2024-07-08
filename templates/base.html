@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="{{ url_for('home') }}">HOME</a></li>
+                <li><a href="#">SEMESTER</a>
+                    <ul class="dropdown">
+                        {% for semester in semester_data %}
+                            <li><a href="{{ url_for('view_semester', semester=semester) }}">{{ semester }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

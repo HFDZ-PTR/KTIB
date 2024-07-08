@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Materi Upload{% endblock %}
+
+{% block content %}
+<section id="hero">
+    <h1>Welcome to the Material Upload System</h1>
+    <p>Select a semester from the menu to view or upload materials.</p>
+</section>
+
+<div class="container">
+    <aside id="upload">
+        <h3>Upload Materi</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data" id="upload_form">
+            <div class="form-group">
+                <label for="semester">Semester:</label>
+                <select name="semester" id="semester">
+                    {% for semester in semester_data %}
+                    <option value="{{ semester }}" {% if selected_semester == semester %}selected{% endif %}>{{ semester }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="mata_kuliah">Mata Kuliah:</label>
+                <select name="mata_kuliah" id="mata_kuliah">
+                    {% if selected_semester %}
+                    {% for mata_kuliah in semester_data[selected_semester] %}
+                    <option value="{{ mata_kuliah }}">{{ mata_kuliah }}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="file">File Materi:</label>
+                <input type="file" name="file" id="file">
+            </div>
+            
+            <button type="submit">Upload</button>
+        </form>
+    </aside>
+
+    <main>
+        <div id="toolbar">
+            <h3>Search Courses</h3>
+            <input type="text" id="search-bar" placeholder="Search for courses..." onkeyup="filterCourses()">
+        </div>
+
+        {% if selected_semester %}
+        <h2>{{ selected_semester }}</h2>
+        <ul class="courses-list" id="courses-list">
+            {% for mata_kuliah in semester_data[selected_semester].keys() %}
+            <li class="course-item">
+                <a href="#" onclick="openCourseFilesDialog('{{ selected_semester }}', '{{ mata_kuliah }}')">{{ mata_kuliah }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Please select a semester to view the courses.</p>
+        {% endif %}
+    </main>
+</div>
+
+<dialog id="course-files-dialog">
+    <div id="course-files-content">
+        <!-- Course files content will be dynamically inserted here -->
+    </div>
+    <button onclick="closeCourseFilesDialog()">Close</button>
+</dialog>
+
+{% endblock %}

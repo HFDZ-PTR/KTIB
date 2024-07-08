@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course }} Files{% endblock %}
+
+{% block content %}
+    <h1>{{ course }} Files</h1>
+    <h3>Semester: {{ semester }}</h3>
+    <ul>
+        {% for file in course_files %}
+            <li>
+                <a href="{{ url_for('uploaded_file', filename=semester + '/' + course + '/' + file) }}" target="_blank">{{ file }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
